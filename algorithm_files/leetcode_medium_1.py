@@ -1364,6 +1364,30 @@ class Solution3(object):
             node.right, node.right.right = TreeNode(v), node.right
         return dummy.left
 
+    @decorate_time
+    def linked_list_cycle_second(self, in_head):
+        """
+        Given a linked list, return the node where the cycle begins. If there is no cycle, return null.
+        Note: Do not modify the linked list.
+        Follow up:
+        Can you solve it without using extra space?
+        :param in_head:
+        :return:
+        """
+        try:
+            slow = in_head
+            fast = in_head.next
+            while slow is not fast:
+                slow = slow.next
+                fast = fast.next.next
+        except Exception:
+            return None
+        slow = slow.next
+        while in_head is not slow:
+            in_head = in_head.next
+            slow = slow.next
+        return in_head
+
 
 if __name__ == '__main__':
     sol = Solution3()

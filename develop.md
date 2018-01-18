@@ -341,4 +341,6 @@
     
 ## https://leetcode.com leetcode_medium_1.py 2018-01-17 medium
     37. linked_list_cycle_second 
+    38. subarray_sum_equal_k
+    39. target_sum
     

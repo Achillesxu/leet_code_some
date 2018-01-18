@@ -1388,6 +1388,62 @@ class Solution3(object):
             slow = slow.next
         return in_head
 
+    @decorate_time
+    def subarray_sum_equal_k(self, nums, k):
+        """
+        Given an array of integers and an integer k,
+        you need to find the total number of continuous subarrays whose sum equals to k.
+        Example 1:
+        Input:nums = [1,1,1], k = 2
+        Output: 2
+        Note:
+        The length of the array is in range [1, 20,000].
+        The range of numbers in the array is [-1000, 1000] and the range of the integer k is [-1e7, 1e7].
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        count, cur, res = {0: 1}, 0, 0
+        for v in nums:
+            cur += v
+            res += count.get(cur - k, 0)
+            count[cur] = count.get(cur, 0) + 1
+        return res
+
+    @decorate_time
+    def target_sum(self, nums, in_sum):
+        """
+        You are given a list of non-negative integers, a1, a2, ..., an, and a target, S. Now you have 2 symbols + and -.
+        For each integer, you should choose one from + and - as its new symbol.
+        Find out how many ways to assign symbols to make sum of integers equal to target S.
+        Example 1:
+        Input: nums is [1, 1, 1, 1, 1], S is 3.
+        Output: 5
+        Explanation:
+        -1+1+1+1+1 = 3
+        +1-1+1+1+1 = 3
+        +1+1-1+1+1 = 3
+        +1+1+1-1+1 = 3
+        +1+1+1+1-1 = 3
+        There are 5 ways to assign symbols to make the sum of nums be target 3.
+        Note:
+        The length of the given array is positive and will not exceed 20.
+        The sum of elements in the given array will not exceed 1000.
+        Your output answer is guaranteed to be fitted in a 32-bit integer.
+        :param nums:
+        :param in_sum:
+        :return: int
+        """
+        from collections import defaultdict
+        memo = {0: 1}
+        for x in nums:
+            m = defaultdict(int)
+            for s, n in memo.items():
+                m[s + x] += n
+                m[s - x] += n
+            memo = m
+        return memo[in_sum]
+
 
 if __name__ == '__main__':
     sol = Solution3()
@@ -1428,7 +1484,9 @@ if __name__ == '__main__':
     # print(sol.array_nesting([5,4,0,3,1,6,2]))
     # print(sol.binary_tree_inorder_traversal(root))
     # print(sol.total_hamming_distance([4, 14, 2]))
-    print(sol.task_scheduler(["A","A","A","B","B","B"], 2))
+    # print(sol.task_scheduler(["A","A","A","B","B","B"], 2))
+    # print(sol.subarray_sum_equal_k((1, 1, 1), 2))
+    print(sol.target_sum((1, 1, 1, 1, 1), 3))
 
 
 

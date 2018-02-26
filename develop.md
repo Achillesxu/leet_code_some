@@ -344,3 +344,6 @@
     38. subarray_sum_equal_k
     39. target_sum
     
+##  2018-02-26 pymemcache_ex.py
+    1. add test case
+    

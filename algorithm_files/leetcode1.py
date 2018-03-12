@@ -433,11 +433,10 @@ class Solution1(object):
         :return: int
         """
         base_key = 0
-        if len(nums):
+        if not len(nums):
             return 0
         while True:
             if base_key + 1 == len(nums):
-                print(nums)
                 return base_key + 1
             else:
                 if nums[base_key] == nums[base_key+1]:

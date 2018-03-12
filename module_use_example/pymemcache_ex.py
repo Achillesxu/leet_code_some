@@ -13,7 +13,8 @@
 """
 from pymemcache.client.base import Client
 
-client = Client()
+client = Client(('localhost', 11211))
+
 
 if __name__ == '__main__':
     pass

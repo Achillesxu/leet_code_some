@@ -347,3 +347,5 @@
 ##  2018-02-26 pymemcache_ex.py
     1. add test case
     
+##  2018-03-12 asynio_example.py  
+    1. add asynio simple example

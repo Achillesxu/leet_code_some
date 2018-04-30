@@ -349,3 +349,6 @@
     
 ##  2018-03-12 asynio_example.py  
     1. add asynio simple example
+
+## 2018-04-30
+    1. tornado 使用信号进行停止

@@ -52,6 +52,10 @@ def get_number(in_num):
         return -1, -1
 
 
+def get_name_pw_info(in_name):
+    pass
+
+
 if __name__ == '__main__':
     # parser = argparse.ArgumentParser(description="""import nan gua media info from file or from nangua interface""")
     # parser.add_argument('type', nargs=1, type=str, choices=IMPORT_TYPE_LIST,
@@ -65,7 +69,7 @@ if __name__ == '__main__':
     # else:
     #     func_2()
     # print('import finish, datetime <{}>'.format(datetime.datetime.now()))
-    input_salary = 15600.00
+    input_salary = 11222.71
     a, b = get_number(input_salary)
     if a == -1:
         print('cal error')

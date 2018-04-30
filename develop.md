@@ -355,3 +355,4 @@
     2. add a python 3.6 new descrptor instance
     3. add charactor factory function, it can replace the descrptor,
     but cant inherit
+    4. 关于类属性与对象属性的几个例子，还没看明白

@@ -13,6 +13,8 @@
 """
 import abc
 
+import collections
+
 
 class AutoStorage:
     def __get__(self, instance, owner):
@@ -101,6 +103,69 @@ class LineItemFuc:
         return self.weight * self.price
 
 
+def cls_name(obj_or_cls):
+    cls = type(obj_or_cls)
+    if cls is type:
+        cls = obj_or_cls
+    return cls.__name__.split('.')[-1]
+
+
+def display(obj):
+    cls = type(obj)
+    if cls is type:
+        return f'<class {obj.__name__}>'
+    elif cls in [type(None), int]:
+        return repr(obj)
+    else:
+        return f'<{cls_name(obj)} object>'
+
+
+def print_args(name, *args):
+    pseudo_args = ', '.join(display(x) for x in args)
+    print(f'-> {cls_name(args[0])}.__{name}__({pseudo_args})')
+
+
+class Overriding:
+    """数据描述符或强制描述符"""
+
+    def __get__(self, instance, owner):
+        print_args('get', self, instance, owner)
+
+    def __set__(self, instance, value):
+        print_args('set', self, instance, value)
+
+
+class OverridingNoGet:
+    """没有__get__的覆盖性描述符"""
+
+    def __set__(self, instance, value):
+        print_args('set', self, instance, value)
+
+
+class NonOverriding:
+    """非数据描述符或遮盖型描述符"""
+
+    def __get__(self, instance, owner):
+        print_args('get', self, instance, owner)
+
+
+class Managed:
+    over = Overriding()
+    over_not_get = OverridingNoGet()
+    non_over = NonOverriding()
+
+    def spam(self):
+        print(f'-> Managed.spam({display(self)})')
+
+
+class Text(collections.UserString):
+    def __repr__(self):
+        return f'Text({self.data!r})'
+
+    def reverse(self):
+        return self[::-1]
+
+
 if __name__ == '__main__':
     # try:
     #     a_item = LineItem('apple sum of price', 0, 8)
@@ -109,10 +174,16 @@ if __name__ == '__main__':
     # else:
     #     print(a_item.description)
     #     print(a_item.subtotal())
-    try:
-        a_item = LineItemFuc('apple sum of price', 0, 8)
-    except ValueError as e:
-        print(e)
-    else:
-        print(a_item.description)
-        print(a_item.subtotal())
+    # try:
+    #     a_item = LineItemFuc('apple sum of price', 0, 8)
+    # except ValueError as e:
+    #     print(e)
+    # else:
+    #     print(a_item.description)
+    #     print(a_item.subtotal())
+    mm = Managed()
+    print(mm.over)
+    print(Managed.over)
+    print('\n')
+    mm.over = 7
+    print(mm.over)

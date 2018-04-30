@@ -356,3 +356,4 @@
     3. add charactor factory function, it can replace the descrptor,
     but cant inherit
     4. 关于类属性与对象属性的几个例子，还没看明白
+    5. dict without attribute, so the code is wrong, find AttrDict at pypi

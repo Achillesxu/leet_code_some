@@ -68,9 +68,49 @@ class LineItem:
         return self.weight * self.price
 
 
-if __name__ == '__main__':
+def quantity():
     try:
-        a_item = LineItem('apple sum of price', 0, 8)
+        quantity.counter += 1
+    except AttributeError:
+        quantity.counter = 0
+
+    storage_name = f'_quantity:{quantity.counter}'
+
+    def qty_getter(instance):
+        return getattr(instance, storage_name)
+
+    def qty_setter(instance, value):
+        if value > 0:
+            setattr(instance, storage_name, value)
+        else:
+            raise ValueError('value must be > 0')
+
+    return property(fget=qty_getter, fset=qty_setter)
+
+
+class LineItemFuc:
+    weight = quantity()
+    price = quantity()
+
+    def __init__(self, description, weight, price):
+        self.description = description
+        self.weight = weight
+        self.price = price
+
+    def subtotal(self):
+        return self.weight * self.price
+
+
+if __name__ == '__main__':
+    # try:
+    #     a_item = LineItem('apple sum of price', 0, 8)
+    # except ValueError as e:
+    #     print(e)
+    # else:
+    #     print(a_item.description)
+    #     print(a_item.subtotal())
+    try:
+        a_item = LineItemFuc('apple sum of price', 0, 8)
     except ValueError as e:
         print(e)
     else:

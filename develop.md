@@ -353,3 +353,5 @@
 ## 2018-04-30
     1. tornado 使用信号进行停止
     2. add a python 3.6 new descrptor instance
+    3. add charactor factory function, it can replace the descrptor,
+    but cant inherit

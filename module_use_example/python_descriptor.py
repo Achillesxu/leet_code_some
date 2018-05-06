@@ -12,6 +12,8 @@
 @desc : python 3.6 new descriptor
 """
 import abc
+import logging
+from functools import wraps, partial
 
 import collections
 
@@ -166,6 +168,82 @@ class Text(collections.UserString):
         return self[::-1]
 
 
+def logged(level, name=None, message=None):
+    """定义一个可接受参数的装饰器"""
+
+    def decorate(func):
+        log_name = name if name else func.__module__
+        log = logging.getLogger(log_name)
+        log_msg = message if message else func.__name__
+
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            log.log(level, log_msg)
+            # print(level, log_msg, log_name)
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return decorate
+
+
+def attach_wrapper(obj, func=None):
+    if func is None:
+        return partial(attach_wrapper, obj)
+    setattr(obj, func.__name__, func)
+    return func
+
+
+def logged_re(level, name=None, message=None):
+    """定义用户可修改的属性的装饰器"""
+
+    def decorate(func):
+        log_name = name if name else func.__module__
+        log = logging.getLogger(log_name)
+        log_msg = message if message else func.__name__
+
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            log.log(level, log_msg)
+            # print(level, log_msg, log_name)
+            return func(*args, **kwargs)
+
+        @attach_wrapper(wrapper)
+        def set_level(new_level):
+            nonlocal level
+            level = new_level
+
+        @attach_wrapper(wrapper)
+        def set_message(new_msg):
+            nonlocal log_msg
+            log_msg = new_msg
+
+        return wrapper
+
+    return decorate
+
+
+def logged_opt(func=None, level=logging.INFO, name=None, message=None):
+    if func is None:
+        return partial(logged_opt, level=level, name=name, message=message)
+    log_name = name if name else func.__module__
+    log = logging.getLogger(log_name)
+    log_msg = message if message else func.__name__
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        log.log(level, log_msg)
+        # print(level, log_msg, log_name)
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
+@logged(logging.INFO)
+def add(x, y):
+    return x + y
+
+
 if __name__ == '__main__':
     # try:
     #     a_item = LineItem('apple sum of price', 0, 8)
@@ -181,9 +259,10 @@ if __name__ == '__main__':
     # else:
     #     print(a_item.description)
     #     print(a_item.subtotal())
-    mm = Managed()
-    print(mm.over)
-    print(Managed.over)
-    print('\n')
-    mm.over = 7
-    print(mm.over)
+    # mm = Managed()
+    # print(mm.over)
+    # print(Managed.over)
+    # print('\n')
+    # mm.over = 7
+    # print(mm.over)
+    print(add(3, 4))

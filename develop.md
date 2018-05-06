@@ -357,3 +357,6 @@
     but cant inherit
     4. 关于类属性与对象属性的几个例子，还没看明白
     5. dict without attribute, so the code is wrong, find AttrDict at pypi
+
+## 2018-05-06
+    1. 添加函数装饰器，三种类型

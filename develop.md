@@ -360,3 +360,8 @@
 
 ## 2018-05-06
     1. 添加函数装饰器，三种类型
+    
+## 2018-07-29 double_link_list.py
+```
+    1. add double link list
+``` 

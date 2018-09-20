@@ -39,7 +39,7 @@ def func_2():
 
 
 def get_number(in_num):
-    mid_val = decimal.Decimal(in_num - 3500)
+    mid_val = decimal.Decimal(in_num - 5000)
     if mid_val < decimal.Decimal(0):
         mid_val = decimal.Decimal(0)
 
@@ -69,7 +69,7 @@ if __name__ == '__main__':
     # else:
     #     func_2()
     # print('import finish, datetime <{}>'.format(datetime.datetime.now()))
-    input_salary = 11222.71
+    input_salary = 19000
     a, b = get_number(input_salary)
     if a == -1:
         print('cal error')

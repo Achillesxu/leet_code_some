@@ -11,9 +11,10 @@
 @File : redis_ex.py
 @desc :
 """
+import json
 import redis
 
-r_pool = redis.ConnectionPool(host='localhost', port=14999, db=0,
+r_pool = redis.ConnectionPool(host='localhost', port=6379, db=0,
                               decode_responses=True, connection_class=redis.Connection)
 r_ins = redis.Redis(connection_pool=r_pool)
 
@@ -23,11 +24,15 @@ if __name__ == '__main__':
     # print(r_ins.get('record_xushiyin'))
     # print(r_ins.incr('record_xushiyin', 1))
     # print(r_ins.get('record_xushiyin'))
-    r_ins.set('record_xushiyin_1', 10)
-    r_ins.set('record_xushiyin_2', 10)
-    r_ins.set('record_xushiyin_3', 10)
-    r_ins.set('record_xushiyin_4', 10)
-    r_ins.set('record_xushiyin_5', 10)
+    # r_ins.set('record_xushiyin_1', 10)
+    # r_ins.set('record_xushiyin_2', 10)
+    # r_ins.set('record_xushiyin_3', 10)
+    # r_ins.set('record_xushiyin_4', 10)
+    # r_ins.set('record_xushiyin_5', 10)
+    r_ins.hset('xushiyin', 'second', json.dumps({'content': '我的短信'}))
+    pp = r_ins.hget('xushiyin', 'second')
+    print(pp)
+    print(json.loads(pp))
     # p_ps = r_ins.pubsub()
     # p_ps.subscribe('achilles_xushy')
     # p_ps.subscribe('achilles_xushy1')

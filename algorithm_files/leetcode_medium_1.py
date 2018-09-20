@@ -1445,48 +1445,198 @@ class Solution3(object):
         return memo[in_sum]
 
 
+def get_quasi_constant(in_list):
+    """
+    :param in_list: [6,6,7,8,9,10]
+    :return: int: 3
+    """
+    from collections import Counter
+    cnt_dict = Counter(in_list)
+    max_couple = [0, 0]
+    for k, v in cnt_dict.items():
+        if v > 1 and v > max_couple[1]:
+            max_couple[0] = k
+            max_couple[1] = v
+    if max_couple[1] == 0:
+        return 0
+    else:
+        return max_couple[1] + max(cnt_dict.get(max_couple[0] - 1, 0), cnt_dict.get(max_couple[0] + 1, 0))
+
+
+def get_file_type_size_statistics(in_str):
+    """
+    :param in_str: str
+    :return: str
+    """
+    type_dict = {
+        'mp3': 'music',
+        'aac': 'music',
+        'flac': 'music',
+        'jpg': 'image',
+        'bmp': 'image',
+        'gif': 'image',
+        'mp4': 'movie',
+        'avi': 'movie',
+        'mkv': 'movie',
+        '7z': 'other',
+        'text': 'other',
+        'zip': 'other',
+    }
+    # 统计字典
+    stat_dict = {
+        'music': 0,
+        'image': 0,
+        'movie': 0,
+        'other': 0
+    }
+    # 分成单行数组
+    sep_lines = [i for i in in_str.strip().split('\n')]
+    print(sep_lines, len(sep_lines))
+    for i in sep_lines:
+        if i:
+            f_name, f_size = i.split(' ')
+            f_ext = f_name.split('.')[-1]
+            f_size = int(f_size[:-1])
+            ext_type = type_dict.get(f_ext, 'other')
+            stat_dict[ext_type] += f_size
+    # 字典生成字符串
+    ret_str = ''
+    for k, v in stat_dict.items():
+        if k in ('image', 'movie'):
+            ret_str += k +'s ' + str(v) + 'b\n'
+        else:
+            ret_str += k +' ' + str(v) + 'b\n'
+    return ret_str
+
+def trans_time_to_int(in_d, in_t):
+    day_dict = {
+        'Mon': 0,
+        'Tue': 1,
+        'Wed': 2,
+        'Thu': 3,
+        'Fri': 4,
+        'Sat': 5,
+        'Sun': 6
+    }
+    t_hour, t_min = in_t.split(':')
+    return day_dict[in_d] * 24 * 60 + int(t_hour) * 60 + int(t_min)
+
+def get_longest_sleeping_time(in_str):
+    """
+    将所有的时间映射成数字轴上的数字，找到最大区间即可
+    :param in_str:
+    :return: int
+    """
+    def trans_time_to_int(in_d, in_t):
+        cnt_dict = {
+            'Mon': 0,
+            'Tue': 1,
+            'Wed': 2,
+            'Thu': 3,
+            'Fri': 4,
+            'Sat': 5,
+            'Sun': 6
+        }
+        t_hour, t_min = in_t.split(':')
+        return cnt_dict[in_d] * 24 * 60 + int(t_hour) * 60 + int(t_min)
+
+    sep_lines = [i for i in in_str.strip().split('\n')]
+    day_dict = {
+        'Mon': [],
+        'Tue': [],
+        'Wed': [],
+        'Thu': [],
+        'Fri': [],
+        'Sat': [],
+        'Sun': []
+    }
+    for i in sep_lines:
+        f_day, t_dure = i.split(' ')
+        t1, t2 = t_dure.split('-')
+        day_dict[f_day].append([trans_time_to_int(f_day, t1), trans_time_to_int(f_day, t2)])
+    res_list = []
+    for k, v in day_dict.items():
+        for i in v:
+            res_list.append(i[0])
+            res_list.append(i[1])
+    print(day_dict)
+
+    ret_max = 0
+    print(res_list)
+    res_list.insert(0, 0)
+    res_list.append(24 * 7 * 60)
+    print(res_list)
+    for i in range(len(res_list)//2):
+
+        if res_list[2*i + 1] - res_list[2*i] > ret_max:
+            ret_max = res_list[2*i + 1] - res_list[2*i]
+    print(ret_max)
+
+
 if __name__ == '__main__':
-    sol = Solution3()
-    # print(sol.sentence_similarity_two(["great", "acting", "skills"], ["fine", "drama", "talent"],
-    #                                   [["great", "good"], ["fine", "good"], ["acting", "drama"],
-    #                                    ["skills", "talent"]]))
-    # print(sol.encode_and_decode_tiny_url(True, 'https://leetcode.com/problems/design-tinyurl'))
-    # print(sol.encode_and_decode_tiny_url(False, 'http://tinyurl.com/a'))
-    # root = sol.maximum_binary_tree([3, 2, 1, 6, 0, 5])
-    # for i in level_output_tree(root):
-    #     print(i)
-    # print(sol.complex_number_multiplication("1+-1i", "1+-1i"))
-    # print(sol.count_bits(5))
-    # print(sol.find_all_duplicates_in_an_array([4,3,2,7,8,2,3,1]))
-    # print([[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]])
-    # print(sol.queue_reconstruction_by_height([[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]))
-    # root = yield_nodes_tree()
-    # print(sol.find_bottom_left_tree_value(root))
-    # print(sol.single_element_in_a_sorted_array([1,1,2,3,3,4,4,8,8]))
-    # print(sol.find_largest_value_in_each_tree_row(root))
-    # print(sol.most_frequent_subtree_sum(root))
-    # msp = MapSumPairs()
-    # msp.insert('apple', 6)
-    # msp.insert('apple', 4)
-    # msp.insert('apply', 5)
-    # print(msp.sum('app'))
-    # print(sol.find_duplicate_file_in_system(["root/a 1.txt(abcd) 2.txt(efgh)", "root/c 3.txt(abcd)",
-    #                                          "root/c/d 4.txt(efgh)", "root 4.txt(efgh)"]))
-    # print(sol.single_number_three([1, 2, 1, 3, 2, 5]))
-    # print(sol.beautiful_arrangement(3))
-    # for k, v in sol.beat_cache.items():
-    #     print(k, v)
-    # print(sol.arithmetic_slices([1, 3, 5, 7, 9]))
-    # print(sol.optimal_division([1000, 10, 10, 2]))
-    # print(sol.minimum_ascii_delete_sum_for_two_strings('delete', 'leet'))
-    # print(sol.sort_by_frequency('Aabb'))
-    # print(sol.product_of_array_except_self([1,2,3,4]))
-    # print(sol.array_nesting([5,4,0,3,1,6,2]))
-    # print(sol.binary_tree_inorder_traversal(root))
-    # print(sol.total_hamming_distance([4, 14, 2]))
-    # print(sol.task_scheduler(["A","A","A","B","B","B"], 2))
-    # print(sol.subarray_sum_equal_k((1, 1, 1), 2))
-    print(sol.target_sum((1, 1, 1, 1, 1), 3))
+    input_str = """Mon 01:00-23:00
+Tue 01:00-23:00
+Wed 01:00-23:00
+Thu 01:00-23:00
+Fri 01:00-23:00
+Sat 01:00-23:00
+Sun 01:00-21:00
+"""
+    get_longest_sleeping_time(input_str)
+
+
+
+# if __name__ == '__main__':
+#     sol = Solution3()
+#     # print(sol.sentence_similarity_two(["great", "acting", "skills"], ["fine", "drama", "talent"],
+#     #                                   [["great", "good"], ["fine", "good"], ["acting", "drama"],
+#     #                                    ["skills", "talent"]]))
+#     # print(sol.encode_and_decode_tiny_url(True, 'https://leetcode.com/problems/design-tinyurl'))
+#     # print(sol.encode_and_decode_tiny_url(False, 'http://tinyurl.com/a'))
+#     # root = sol.maximum_binary_tree([3, 2, 1, 6, 0, 5])
+#     # for i in level_output_tree(root):
+#     #     print(i)
+#     # print(sol.complex_number_multiplication("1+-1i", "1+-1i"))
+#     # print(sol.count_bits(5))
+#     # print(sol.find_all_duplicates_in_an_array([4,3,2,7,8,2,3,1]))
+#     # print([[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]])
+#     # print(sol.queue_reconstruction_by_height([[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]))
+#     # root = yield_nodes_tree()
+#     # print(sol.find_bottom_left_tree_value(root))
+#     # print(sol.single_element_in_a_sorted_array([1,1,2,3,3,4,4,8,8]))
+#     # print(sol.find_largest_value_in_each_tree_row(root))
+#     # print(sol.most_frequent_subtree_sum(root))
+#     # msp = MapSumPairs()
+#     # msp.insert('apple', 6)
+#     # msp.insert('apple', 4)
+#     # msp.insert('apply', 5)
+#     # print(msp.sum('app'))
+#     # print(sol.find_duplicate_file_in_system(["root/a 1.txt(abcd) 2.txt(efgh)", "root/c 3.txt(abcd)",
+#     #                                          "root/c/d 4.txt(efgh)", "root 4.txt(efgh)"]))
+#     # print(sol.single_number_three([1, 2, 1, 3, 2, 5]))
+#     # print(sol.beautiful_arrangement(3))
+#     # for k, v in sol.beat_cache.items():
+#     #     print(k, v)
+#     # print(sol.arithmetic_slices([1, 3, 5, 7, 9]))
+#     # print(sol.optimal_division([1000, 10, 10, 2]))
+#     # print(sol.minimum_ascii_delete_sum_for_two_strings('delete', 'leet'))
+#     # print(sol.sort_by_frequency('Aabb'))
+#     # print(sol.product_of_array_except_self([1,2,3,4]))
+#     # print(sol.array_nesting([5,4,0,3,1,6,2]))
+#     # print(sol.binary_tree_inorder_traversal(root))
+#     # print(sol.total_hamming_distance([4, 14, 2]))
+#     # print(sol.task_scheduler(["A","A","A","B","B","B"], 2))
+#     # print(sol.subarray_sum_equal_k((1, 1, 1), 2))
+#     # print(sol.target_sum((1, 1, 1, 1, 1), 3))
+#     # print(get_quasi_constant([6, 6, 10, 9, 7, 7]))
+#     input_str = """my.song.mp3 11b
+# greateSong.flac 1000b
+# not3.txt 5b
+# video.mp4 200b
+# game.exe 100b
+# mov!e.mkv 10000b"""
+#     print(get_file_type_size_statistics(input_str))
+
 
 
 
